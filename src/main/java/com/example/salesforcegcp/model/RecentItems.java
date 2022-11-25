@@ -4,15 +4,16 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
 @Component
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Getter
 @Setter
 @ToString
-public class SalesForceColumnNames {
+public class RecentItems {
 
-    private List<RecentItems> recentItems;
+    private ItemAttributes attributes;
+    private String id;
+    private String name;
 
 }

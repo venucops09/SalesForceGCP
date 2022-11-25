@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @ToString
-public class Field {
+public class ItemAttributes {
 
-    private String name;
+    private String type;
+    private String url;
+
 }

@@ -72,7 +72,7 @@ public class SalesforceDataCollectorRepository implements DataCollectorRepositor
     }
 
 
-    public List<String> getColumnDetails(String tableName) {
+    public SalesForceColumnNames getColumnDetails(String tableName) {
         HttpHeaders headers = new HttpHeaders();
         RestTemplate restTemplate = new RestTemplate();
         List<String> columnDetails = new ArrayList<>();
@@ -82,15 +82,32 @@ public class SalesforceDataCollectorRepository implements DataCollectorRepositor
         headers.set("Authorization", "Bearer "+ salesforceTokenResponse.getAccess_token());
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         ResponseEntity<SalesForceColumnNames> response = restTemplate.exchange(
-                salesforceTokenResponse.getInstance_url()+"/services/data/v25.0/sobjects/"+tableName+"/describe", HttpMethod.GET, requestEntity, SalesForceColumnNames.class);
+                salesforceTokenResponse.getInstance_url()+"/services/data/v25.0/sobjects/"+tableName, HttpMethod.GET, requestEntity, SalesForceColumnNames.class);
         SalesForceColumnNames salesForceColumnNames = response.getBody();
 
         System.out.println(salesForceColumnNames.toString());
         //GETTING THE TABLE NAMES FROM RESPONSE
-        for(Field field: salesForceColumnNames.getFields()){
-                columnDetails.add(field.getName());
-        }
+        List<RecentItems> recentItems = salesForceColumnNames.getRecentItems();
 
-        return columnDetails;
+        return salesForceColumnNames;
+    }
+
+    public SalesforceRowData getAllDataFromTable(String tableName, String rowId) {
+        HttpHeaders headers = new HttpHeaders();
+        RestTemplate restTemplate = new RestTemplate();
+        List<String> tableDetails = new ArrayList<>();
+        SalesforceTokenResponse salesforceTokenResponse = getSalesforceTokenResponse();
+
+        //CALLING ENDPOINT FOR RETRIEVING ALL THE TABLES
+        headers.set("Authorization", "Bearer "+ salesforceTokenResponse.getAccess_token());
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<SalesforceRowData> response = restTemplate.exchange(
+                salesforceTokenResponse.getInstance_url()+"/services/data/v25.0/sobjects/"+tableName+ "/" +rowId, HttpMethod.GET, requestEntity, SalesforceRowData.class);
+        SalesforceRowData salesforceRowData = response.getBody();
+
+        System.out.println(salesforceRowData.toString());
+
+
+        return salesforceRowData;
     }
 }
