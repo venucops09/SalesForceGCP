@@ -10,8 +10,6 @@ import org.springframework.cloud.gcp.data.datastore.repository.config.EnableData
 @EnableDatastoreRepositories
 public class SalesforceGCPApplication {
 
-	@Autowired
-	BrowserHistoryRepo browserHistoryRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SalesforceGCPApplication.class, args);

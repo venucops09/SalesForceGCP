@@ -1,7 +1,11 @@
 package com.example.salesforcegcp.repository;
 
+import com.example.salesforcegcp.entity.BrowserHistory;
+import com.example.salesforcegcp.entity.SalesforceRowDataEntity;
+import com.example.salesforcegcp.mapper.SalesforceEntityMapper;
 import com.example.salesforcegcp.model.*;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +21,7 @@ import java.util.List;
 
 @Repository
 @Log
-public class SalesforceDataCollectorRepository implements DataCollectorRepository  {
+public class SalesforceDataCollectorRepository {
 
     @Value("${salesforce.connection.url}")
     private String url;
@@ -34,8 +38,12 @@ public class SalesforceDataCollectorRepository implements DataCollectorRepositor
     @Value("${salesforce.connection.password}")
     private String password;
 
+    @Autowired
+    BrowserHistoryRepo browserHistoryRepo;
 
-    @Override
+    @Autowired
+    SalesforceEntityMapper salesforceEntityMapper;
+
     public List<String> getTableDetails(String schemaName) {
         RestTemplate restTemplate = new RestTemplate();
         List<String> tableNames = new ArrayList<>();
@@ -106,6 +114,11 @@ public class SalesforceDataCollectorRepository implements DataCollectorRepositor
         SalesforceRowData salesforceRowData = response.getBody();
 
         System.out.println(salesforceRowData.toString());
+
+        //Saving the record data into GCP
+        browserHistoryRepo.save(salesforceEntityMapper.toEntity(salesforceRowData));
+
+        System.out.println("SAVED TO new GCPssss");
 
 
         return salesforceRowData;

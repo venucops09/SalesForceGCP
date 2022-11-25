@@ -16,11 +16,5 @@ public class SalesforceRowData {
     private String IsDeleted;
     private String MasterRecordId;
     private String Name;
-    private String Type;
-    private String ParentId;
-    private String BillingStreet;
-    private String BillingCity;
-    private String BillingState;
-    private String AccountNumber;
 
 }
