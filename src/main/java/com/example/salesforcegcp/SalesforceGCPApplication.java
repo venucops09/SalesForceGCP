@@ -16,6 +16,7 @@ public class SalesforceGCPApplication {
 	}
 /**
 	public void configure() throws Exception {
+ 		//code to move
 		moveAllFile();
 	}
 
