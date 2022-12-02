@@ -14,9 +14,9 @@ public class FireStoreInitializer {
 
     @PostConstruct
     public void initialize() throws IOException{
-//        FileInputStream fileInputStream = new FileInputStream("./sylvan-bonbon-367907-1b1f0ceb5aca.json");
+        FileInputStream fileInputStream = new FileInputStream("./sylvan-bonbon-367907-1b1f0ceb5aca.json");
 
-        FirebaseOptions options=new FirebaseOptions.Builder().setCredentials(GoogleCredentials.getApplicationDefault()).build();
+        FirebaseOptions options=new FirebaseOptions.Builder().setCredentials(GoogleCredentials.fromStream(fileInputStream)).build();
 
         FirebaseApp.initializeApp(options);
     }
